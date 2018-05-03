@@ -5,8 +5,8 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "scripts": {
-    "prepare": "npm run build",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "files": [
     "lib"
@@ -18,11 +18,24 @@
   ],
   "author": "Zak Timson",
   "license": "ISC",
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/src/.*\\.spec\\.ts$"
+  },
   "dependencies": {
     "@types/crypto-js": "^3.1.39",
     "crypto-js": "^3.1.9-1"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.4",
     "typescript": "^2.8.3"
   }
 }
