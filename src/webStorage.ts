@@ -6,15 +6,17 @@ export interface WebStorageOptions {
     defaultValue?: any;
 }
 
-export function LocalStorage(opts: WebStorageOptions = {}) {
+export function LocalStorage(opts: WebStorageOptions) {
+    if(!opts) opts = {};
     return storage(localStorage, opts);
 }
 
-export function SessionStorage(opts: WebStorageOptions = {}) {
+export function SessionStorage(opts: WebStorageOptions) {
+    if(!opts) opts = {};
     return storage(sessionStorage, opts);
 }
 
-function storage(storageType: Storage, opts: WebStorageOptions = {}) {
+function storage(storageType: Storage, opts: WebStorageOptions) {
     return function(target: object, key: string) {
         if(!opts.fieldName) opts.fieldName = key;
 
