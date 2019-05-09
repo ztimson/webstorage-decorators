@@ -5,7 +5,7 @@ A Javascript library that adds property decorators to sync a class property with
 ### Quick Setup
  1. Install with: `npm install --save webstorage-decorators crypto-js`
  2. Add the decorator to your property and you are done!
- ```
+ ```javascript
  import {LocalStorage, SessionStorage} from 'webstorage-decorators';
  
  export class SomeComponent {
@@ -28,4 +28,3 @@ A Javascript library that adds property decorators to sync a class property with
   }
  }
  ```
- 
