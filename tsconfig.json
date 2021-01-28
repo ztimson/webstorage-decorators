@@ -1,18 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "commonjs",
+    "target": "es2015",
+    "module": "es2020",
     "declaration": true,
+    "sourceMap": true,
     "outDir": "lib",
+    "strict": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
     "typeRoots": [
       "./node_modules/@types"
     ],
-    "strict": true,
-    "noImplicitAny": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
-    "index.ts",
-    "src/**/*"
+    "./src"
   ]
 }

@@ -1,6 +1,5 @@
 /**
  * Options to be used with WebStorage decorators
- * @category WebStorage
  */
 export interface WebStorageOptions {
     /** Default value to provide if storage is empty */
@@ -21,7 +20,6 @@ export interface WebStorageOptions {
  * }
  * ```
  *
- * @category WebStorage
  * @param defaultValue Default value to return if property does no exist inside localStorage.
  * @param opts Any additional options
  */
@@ -37,7 +35,6 @@ export declare function LocalStorage(defaultValue?: any, opts?: WebStorageOption
  * }
  * ```
  *
- * @category WebStorage
  * @param defaultValue Default value to return if property does no exist inside sessionStorage.
  * @param opts Any additional options
  */

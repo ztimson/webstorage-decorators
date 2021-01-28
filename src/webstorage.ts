@@ -59,10 +59,12 @@ export function SessionStorage(defaultValue?, opts: WebStorageOptions = {}) {
  * @param opts Any additional options
  */
 function fromStorage(storage: Storage, opts: WebStorageOptions) {
-    let storedVal = storage.getItem(<string>opts.key);
-    if(storedVal == null) return opts.default != null ? opts.default : null;
-    if(opts.encryptWith != null) storedVal = JSON.parse(crypto.AES.decrypt(JSON.parse(storedVal), opts.encryptWith).toString(crypto.enc.Utf8));
-    return typeof storedVal == 'object' && !Array.isArray(storedVal) ? Object.assign(opts.default, storedVal) : storedVal;
+    let storedVal = JSON.parse(<string>storage.getItem(<string>opts.key));
+    if(storedVal == null && opts.default == null) return null;
+    if(storedVal != null && opts.encryptWith != null) storedVal = JSON.parse(crypto.AES.decrypt(storedVal, opts.encryptWith).toString(crypto.enc.Utf8));
+    if(opts.default != null && opts.default.constructor != null) return Object.assign(new opts.default.constructor(), opts.default, storedVal);
+    if(typeof storedVal == 'object' && !Array.isArray(storedVal)) return Object.assign({}, opts.default, storedVal);
+    return storedVal;
 }
 
 /**

@@ -21,6 +21,13 @@ export class MyCustomClass {
  ```
 
 ## Caveats
+
+### Custom Functions
+You can technically store anything inside local/session storage however everything is serialized using javascript's JSON,
+so any prototypes will be stripped causing you to lose any extra functions you may have defined on your class. However
+if you provide a default value, 
+
+### Impure Functions
 Impure functions don't use the Object's setter preventing the storage from being updated. To prevent this use a pure
 function or save it manually by reading the variable. (Reading triggers change detection & save if there are differences)
 ```typescript

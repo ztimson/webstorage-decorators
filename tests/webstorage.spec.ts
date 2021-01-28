@@ -3,7 +3,6 @@ import {LocalStorage, SessionStorage} from "../src";
 const CUSTOM_KEY = '_MY_KEY'
 const ENCRYPTION_KEY = 'abc123';
 
-
 class TestType {
     constructor(public first: string, public last: string) { }
     fullName() { return `${this.last}, ${this.first}`; }
@@ -40,6 +39,12 @@ describe('Webstorage Decorators', () => {
         test('Default Value', () => expect(testComponent.defaultedLocalStorage.a).toBeTruthy());
         test('Number Value', () => {
             const testValue = Math.random();
+            testComponent.localStorage = testValue;
+            expect(localStorage.getItem('localStorage')).toBe(JSON.stringify(testValue));
+            expect(testComponent.localStorage).toBe(testValue);
+        });
+        test('Arrays', () => {
+            const testValue = [Math.random(), Math.random(), Math.random()];
             testComponent.localStorage = testValue;
             expect(localStorage.getItem('localStorage')).toBe(JSON.stringify(testValue));
             expect(testComponent.localStorage).toBe(testValue);
@@ -95,6 +100,12 @@ describe('Webstorage Decorators', () => {
         test('Default Value', () => expect(testComponent.defaultedSessionStorage.a).toBeTruthy());
         test('Number Value', () => {
             const testValue = Math.random();
+            testComponent.sessionStorage = testValue;
+            expect(sessionStorage.getItem('sessionStorage')).toBe(JSON.stringify(testValue));
+            expect(testComponent.sessionStorage).toBe(testValue);
+        });
+        test('Arrays', () => {
+            const testValue = [Math.random(), Math.random(), Math.random()];
             testComponent.sessionStorage = testValue;
             expect(sessionStorage.getItem('sessionStorage')).toBe(JSON.stringify(testValue));
             expect(testComponent.sessionStorage).toBe(testValue);
