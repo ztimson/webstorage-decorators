@@ -1,30 +1,36 @@
-# WebStorage
+# WebStorage Decorators
+A Javascript library that adds property decorators to sync a class property with the local or session storage.
 
-A Javascript library that adds property decorators to sync a class property with the local & session storage. It also includes crypto-js so that sensitive information being stored on the client is not stored in plain text.
-
-### Quick Setup
- 1. Install with: `npm install --save webstorage-decorators crypto-js`
- 2. Add the decorator to your property and you are done!
- ```javascript
- import {LocalStorage, SessionStorage} from 'webstorage-decorators';
+## Quick Setup
+ 1. Install with: `npm install --save webstorage-decorators`
+ 2. Add the decorator to your property and use as normal!
+ ```typescript
+import {LocalStorage, SessionStorage} from 'webstorage-decorators';
  
- export class SomeComponent {
- 
-  @LocalStorage({
-    fieldName: 'customName',
-    encryptionKey: settings.encryptionToken,
-    defaultValue: 123
-  })
-  someProperty;
-  
-  @SessionStorage(/* Accepts same optional paramters as the LocalStorage*/) user;
-  
-  constructor(user) {
-    // This property will get its vallue from the local storage or default to 123 if the property doesn't exist
-    console.log(this.someProperty)
-  
-    // Because of our SessionStorage decorator the user is automatically stored in the session storage
-    this.user = user  
-  }
- }
+export class MyCustomClass {
+     @LocalStorage({key: 'site_theme', default: 'light_theme'}) theme: string;
+     @SessionStorage({encryptWith: config.entryptionKey}) thisUser: User;
+     
+     constructor() {
+        console.log(this.theme, localStorage.getItem('theme')); // Output: 'light_theme', 'light_theme'
+        console.log(this.user, localStorage.getItem('user')); // Output: null, undefined
+        user = {first: 'John', last: 'Smith', ...}
+        console.log(this.user, this.user == localStorage.getItem('user')); // Output: {first: 'John', last: 'Smith', ...}, true
+    }
+}
  ```
+
+## Caveats
+Impure functions don't use the Object's setter preventing the storage from being updated. To prevent this use a pure
+function or save it manually by reading the variable. (Reading triggers change detection & save if there are differences)
+```typescript
+@LocalStorage([1, 2]) example: number[];
+example.push(3) // Impure & won't update storage
+console.log(localStorage.getItem('example')) // Output: [1, 2];
+example; // Trigger save
+console.log(localStorage.getItem('example')) // Output: [1, 2, 3];
+
+// OR
+
+example = example.concat([3]); // Pure function requires you to use the setter triggering automatic saving
+```

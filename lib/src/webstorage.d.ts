@@ -5,6 +5,8 @@
 export interface WebStorageOptions {
     /** Default value to provide if storage is empty */
     default?: any;
+    /** Key to prevent plain text storage **/
+    encryptWith?: string;
     /** Key to save under */
     key?: string;
 }
