@@ -1,1 +1,1 @@
-export * from './webStorage';
+export * from './webstorage';
