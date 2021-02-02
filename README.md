@@ -21,6 +21,23 @@ export class MyCustomClass {
 }
  ```
 
+## Documentation
+
+### Decorators
+
+| Decorator | Description |
+|-----------|-------------|
+| @LocalStorage(defaultValue: any, options: WebStorageOptions) | Syncs property to LocalStorage item under the same name |
+| @SessionStorage(defaultValue: any, options: WebStorageOptions) | Syncs property to SessionStorage item under the same name |
+
+### WebStorageOptions
+
+| Options | Description |
+|---------|-------------|
+| default | Default value, same as decorator's first argument |
+| encryptWith | Secret key to encrypt stored values with |
+| key | Key to reference value inside local/session storage (Defaults to the property name) |
+
 ## Caveats
 
 ### Custom Functions
