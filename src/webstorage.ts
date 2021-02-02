@@ -59,12 +59,20 @@ export function SessionStorage(defaultValue?, opts: WebStorageOptions = {}) {
  * @param opts Any additional options
  */
 function fromStorage(storage: Storage, opts: WebStorageOptions) {
-    let storedVal = JSON.parse(<string>storage.getItem(<string>opts.key));
-    if(storedVal == null && opts.default == null) return null;
-    if(storedVal != null && opts.encryptWith != null) storedVal = JSON.parse(crypto.AES.decrypt(storedVal, opts.encryptWith).toString(crypto.enc.Utf8));
+    let storedVal = storage.getItem(<string>opts.key);
+    if(storedVal == null || storedVal == "" || storedVal == "undefined") {
+        if(opts.default == null) return null;
+        if(opts.default != 'object') return opts.default;
+        if(opts.default.constructor != null) return Object.assign(new opts.default.constructor(), opts.default);
+        let temp = Object.assign({}, opts.default);
+        Object.setPrototypeOf(temp, Object.getPrototypeOf(opts.default));
+        return temp;
+    }
+    storedVal = JSON.parse(<string>storedVal);
+    if(opts.encryptWith != null) storedVal = JSON.parse(crypto.AES.decrypt(<string>storedVal, opts.encryptWith).toString(crypto.enc.Utf8));
+    if(typeof storedVal != 'object' || !Array.isArray(storedVal)) return storedVal;
     if(opts.default != null && opts.default.constructor != null) return Object.assign(new opts.default.constructor(), opts.default, storedVal);
-    if(typeof storedVal == 'object' && !Array.isArray(storedVal)) return Object.assign({}, opts.default, storedVal);
-    return storedVal;
+    return Object.assign({}, opts.default, storedVal);
 }
 
 /**
@@ -81,7 +89,7 @@ function decoratorBuilder(storage: Storage, opts: WebStorageOptions) {
         let field = fromStorage(storage, opts);
         Object.defineProperty(target, key, {
             get: function() {
-                if(field != fromStorage(storage, opts)) target[key] = field;
+                if(field != fromStorage(storage, {key: opts.key, encryptWith: opts.encryptWith})) target[key] = field;
                 return field;
             },
             set: function(value?) {

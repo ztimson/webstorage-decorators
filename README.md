@@ -1,5 +1,6 @@
 # WebStorage Decorators
-A Javascript library that adds property decorators to sync a class property with the local or session storage.
+A Javascript library that adds property decorators to sync a class property with the local or session storage. Useful 
+for persisting themes or local settings over reloads or maintaining filters/search options in the current user session.
 
 ## Quick Setup
  1. Install with: `npm install --save webstorage-decorators`
@@ -25,7 +26,7 @@ export class MyCustomClass {
 ### Custom Functions
 You can technically store anything inside local/session storage however everything is serialized using javascript's JSON,
 so anything extra (prototypes, functions, etc) will be lost. However if you provide a default value, it will be copied &
-the data injected, giving you a workaround to accessing static properties.
+the data injected, giving you a workaround to accessing static properties (Does not work with arrays).
 
 ```typescript
 class Person {
@@ -39,7 +40,7 @@ console.log(example.fullName()) // ERROR: fullName function doesn't exist
 
 LocalStorage.setItem('example2', '{"first": "John", "last": "Smith"}');
 @LocalStorage(new Person(null, null)) example2!: Person;
-console.log(example.fullName()) // Will work because we have a default object to figure out type
+console.log(example2.fullName()) // Works because we have a default object to copy type from
 ```
 
 ### Impure Functions
