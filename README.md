@@ -9,14 +9,15 @@ for persisting themes or local settings over reloads or maintaining filters/sear
 import {LocalStorage, SessionStorage} from 'webstorage-decorators';
  
 export class MyCustomClass {
-     @LocalStorage({key: 'site_theme', default: 'light_theme'}) theme: string;
-     @SessionStorage({encryptWith: config.entryptionKey}) thisUser: User;
+    @LocalStorage('light_theme', {key: 'site_theme'}) theme: string;
+    @SessionStorage(null, {encryptWith: config.entryptionKey}) thisUser: User;
+    @SessionStorage() searchBar: string;
      
-     constructor() {
+    constructor() {
         console.log(this.theme, localStorage.getItem('theme')); // Output: 'light_theme', 'light_theme'
         console.log(this.user, localStorage.getItem('user')); // Output: null, undefined
         user = {first: 'John', last: 'Smith', ...}
-        console.log(this.user, this.user == localStorage.getItem('user')); // Output: {first: 'John', last: 'Smith', ...}, true
+        console.log(this.user, localStorage.getItem('user')); // Output: {first: 'John', last: 'Smith', ...}, **Some encrypted value**
     }
 }
  ```
