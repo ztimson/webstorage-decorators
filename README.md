@@ -24,8 +24,23 @@ export class MyCustomClass {
 
 ### Custom Functions
 You can technically store anything inside local/session storage however everything is serialized using javascript's JSON,
-so any prototypes will be stripped causing you to lose any extra functions you may have defined on your class. However
-if you provide a default value, 
+so anything extra (prototypes, functions, etc) will be lost. However if you provide a default value, it will be copied &
+the data injected, giving you a workaround to accessing static properties.
+
+```typescript
+class Person {
+    constructor(public first: string, public last: string) { }
+    fullName() { return `${this.last}, ${this.first}`; }
+}
+
+LocalStorage.setItem('example', '{"first": "John", "last": "Smith"}');
+@LocalStorage(null) example!: Person;
+console.log(example.fullName()) // ERROR: fullName function doesn't exist
+
+LocalStorage.setItem('example2', '{"first": "John", "last": "Smith"}');
+@LocalStorage(new Person(null, null)) example2!: Person;
+console.log(example.fullName()) // Will work because we have a default object to figure out type
+```
 
 ### Impure Functions
 Impure functions don't use the Object's setter preventing the storage from being updated. To prevent this use a pure
