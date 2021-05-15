@@ -1,13 +1,9 @@
-import * as crypto from 'crypto-js';
-
 /**
  * Options to be used with WebStorage decorators
  */
 export interface WebStorageOptions {
     /** Default value to provide if storage is empty */
     default?: any;
-    /** Key to prevent plain text storage **/
-    encryptWith?: string;
     /** Key to save under */
     key?: string;
 }
@@ -69,9 +65,9 @@ function fromStorage(storage: Storage, opts: WebStorageOptions) {
         return temp;
     }
     storedVal = JSON.parse(<string>storedVal);
-    if(opts.encryptWith != null) storedVal = JSON.parse(crypto.AES.decrypt(<string>storedVal, opts.encryptWith).toString(crypto.enc.Utf8));
     if(typeof storedVal != 'object' || !Array.isArray(storedVal)) return storedVal;
-    if(opts.default != null && opts.default.constructor != null) return Object.assign(new opts.default.constructor(), opts.default, storedVal);
+    if(opts.default != null && opts.default.constructor != null)
+        return Object.assign(new opts.default.constructor(), opts.default, storedVal);
     return Object.assign({}, opts.default, storedVal);
 }
 
@@ -89,13 +85,12 @@ function decoratorBuilder(storage: Storage, opts: WebStorageOptions) {
         let field = fromStorage(storage, opts);
         Object.defineProperty(target, key, {
             get: function() {
-                if(field != fromStorage(storage, {key: opts.key, encryptWith: opts.encryptWith})) target[key] = field;
+                if(field != fromStorage(storage, {key: opts.key})) target[key] = field;
                 return field;
             },
             set: function(value?) {
                 field = value;
                 if(value == null) storage.removeItem(<string>opts.key);
-                if(opts.encryptWith != null) value = <any>crypto.AES.encrypt(JSON.stringify(value), opts.encryptWith).toString();
                 storage.setItem(<string>opts.key, JSON.stringify(value));
             }
         });

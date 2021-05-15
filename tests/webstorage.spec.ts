@@ -1,7 +1,6 @@
 import {LocalStorage, SessionStorage} from "../src";
 
 const CUSTOM_KEY = '_MY_KEY'
-const ENCRYPTION_KEY = 'abc123';
 
 class TestType {
     constructor(public first: string, public last: string) { }
@@ -12,16 +11,14 @@ class TestStorage {
     @LocalStorage() localStorage: any;
     @LocalStorage({a: true, b: 'test', c: 3.14}) defaultedLocalStorage: any;
     @LocalStorage(null, {key: CUSTOM_KEY}) customLocalStorage: any;
-    @LocalStorage(null, {encryptWith: ENCRYPTION_KEY}) encryptedLocalStorage: any;
     @LocalStorage(new TestType('John', 'Smith')) objectLocalStorage!: TestType;
     @SessionStorage() sessionStorage: any;
     @SessionStorage({a: true, b: 'test', c: 3.14}) defaultedSessionStorage: any;
     @SessionStorage(null, {key: CUSTOM_KEY}) customSessionStorage: any;
-    @SessionStorage(null, {encryptWith: ENCRYPTION_KEY}) encryptedSessionStorage: any;
     @SessionStorage(new TestType('John', 'Smith')) objectSessionStorage!: TestType;
 }
 
-describe('Webstorage Decorators', () => {
+describe('WebStorage Decorators', () => {
     let testComponent: TestStorage;
     beforeEach(() => {
         localStorage.clear();
@@ -66,12 +63,6 @@ describe('Webstorage Decorators', () => {
             testComponent.customLocalStorage = testValue;
             expect(localStorage.getItem(CUSTOM_KEY)).toBe(JSON.stringify(testValue));
             expect(testComponent.customLocalStorage).toBe(testValue);
-        });
-        test('Encrypted', () => {
-            const testValue = Math.random();
-            testComponent.encryptedLocalStorage = testValue;
-            expect(localStorage.getItem('encryptedLocalStorage')).not.toBe(JSON.stringify(testValue));
-            expect(testComponent.encryptedLocalStorage).toBe(testValue);
         });
         test('Impure Functions', () => {
             testComponent.localStorage = [1];
@@ -127,12 +118,6 @@ describe('Webstorage Decorators', () => {
             testComponent.customSessionStorage = testValue;
             expect(sessionStorage.getItem(CUSTOM_KEY)).toBe(JSON.stringify(testValue));
             expect(testComponent.customSessionStorage).toBe(testValue);
-        });
-        test('Encrypted', () => {
-            const testValue = Math.random();
-            testComponent.encryptedSessionStorage = testValue;
-            expect(sessionStorage.getItem('encryptedSessionStorage')).not.toBe(JSON.stringify(testValue));
-            expect(testComponent.encryptedSessionStorage).toBe(testValue);
         });
         test('Impure Functions', () => {
             testComponent.sessionStorage = [1];

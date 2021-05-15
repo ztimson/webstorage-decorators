@@ -1,6 +1,6 @@
 {
   "name": "webstorage-decorators",
-  "version": "3.2.6",
+  "version": "4.0.0",
   "description": "Decorators to sync class properties to Local/Session storage",
   "repository": "https://github.com/ztimson/WebstorageDecorators",
   "main": "./lib/index.js",
@@ -21,10 +21,7 @@
   ],
   "author": "Zak Timson",
   "license": "ISC",
-  "dependencies": {
-    "@types/crypto-js": "^4.0.1",
-    "crypto-js": "^4.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "jest": "^26.6.0",

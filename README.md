@@ -36,7 +36,6 @@ export class MyCustomClass {
 | Options | Description |
 |---------|-------------|
 | default | Default value, same as decorator's first argument |
-| encryptWith | Secret key to encrypt stored values with |
 | key | Key to reference value inside local/session storage (Defaults to the property name) |
 
 ## Caveats
