@@ -1,6 +1,6 @@
 {
   "name": "webstorage-decorators",
-  "version": "4.0.0",
+  "version": "4.2.0",
   "description": "Decorators to sync class properties to Local/Session storage",
   "repository": "https://github.com/ztimson/WebstorageDecorators",
   "main": "./lib/index.js",
