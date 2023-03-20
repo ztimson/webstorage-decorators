@@ -62,7 +62,7 @@ jest:
     - if: $CI_COMMIT_BRANCH
 
 registry:
-  stage: publish
+  stage: deploy
   cache:
     - key:
         files:
@@ -90,7 +90,7 @@ registry:
       allow_failure: true
 
 tag:
-  stage: publish
+  stage: deploy
   image:
     name: alpine/git
     entrypoint: [""]
