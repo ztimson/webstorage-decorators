@@ -1,32 +1,33 @@
 {
   "name": "webstorage-decorators",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Decorators to sync class properties to Local/Session storage",
   "repository": "https://github.com/ztimson/WebstorageDecorators",
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "author": "Zak Timson",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest --verbose",
     "test:coverage": "npx jest --verbose --coverage",
     "watch": "npm run build && tsc --watch"
   },
-  "files": [
-    "lib"
-  ],
   "keywords": [
     "Decorators",
     "LocalStorage",
     "SessionStorage",
     "WebStorage"
   ],
-  "author": "Zak Timson",
-  "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^26.0.15",
-    "jest": "^26.6.0",
-    "ts-jest": "^26.4.1",
-    "typescript": "^4.0.3"
-  }
+    "@types/jest": "^29.2.3",
+    "jest": "^29.3.1",
+    "jest-junit": "^15.0.0",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.3"
+  },
+  "files": [
+    "dist"
+  ]
 }
