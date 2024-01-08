@@ -41,7 +41,7 @@ export function LocalStorage(defaultValue?: any, opts: WebStorageOptions = {}) {
  * @param defaultValue Default value to return if property does no exist inside sessionStorage.
  * @param opts Any additional options
  */
-export function SessionStorage(defaultValue?, opts: WebStorageOptions = {}) {
+export function SessionStorage(defaultValue?: any, opts: WebStorageOptions = {}) {
     opts.default = defaultValue;
     return decoratorBuilder(sessionStorage, opts);
 }
@@ -85,7 +85,7 @@ function decoratorBuilder(storage: Storage, opts: WebStorageOptions) {
         let field = fromStorage(storage, opts);
         Object.defineProperty(target, key, {
             get: function() {
-                if(field != fromStorage(storage, {key: opts.key})) target[key] = field;
+                if(field != fromStorage(storage, {key: opts.key})) (<any>target)[key] = field;
                 return field;
             },
             set: function(value?) {

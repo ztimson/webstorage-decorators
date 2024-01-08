@@ -1,7 +1,27 @@
 import {LocalStorage, SessionStorage} from "../src";
 
-const CUSTOM_KEY = '_MY_KEY'
+// Mocks ===============================================================================================================
+class StorageMock implements Storage {
+    private store: {[key: string]: string} = {}
 
+    get length() { return Object.keys(this.store).length; }
+
+    clear() { this.store = {}; }
+    getItem(key: string) { return this.store[key]; }
+    setItem(key: string, value: string) { this.store[key] = value; }
+    removeItem(key: string) { delete this.store[key]; }
+    key(index: number) { return Object.keys(this.store)[index]; }
+}
+
+(<any>global).localStorage = new StorageMock();
+(<any>global).sessionStorage = new StorageMock()
+var localStorage: StorageMock;
+localStorage = (<any>global).localStorage;
+var sessionStorage: StorageMock;
+sessionStorage = (<any>global).sessionStorage;
+
+// Test Data ===========================================================================================================
+const CUSTOM_KEY = '_MY_KEY'
 class TestType {
     constructor(public first: string, public last: string) { }
     fullName() { return `${this.last}, ${this.first}`; }
@@ -18,6 +38,7 @@ class TestStorage {
     @SessionStorage(new TestType('John', 'Smith')) objectSessionStorage!: TestType;
 }
 
+// Tests ===============================================================================================================
 describe('WebStorage Decorators', () => {
     let testComponent: TestStorage;
     beforeEach(() => {

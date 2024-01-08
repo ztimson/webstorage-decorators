@@ -1,0 +1,86 @@
+name: Build
+run-name: Build
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    name: Build NPM Project
+    runs-on: ubuntu-latest
+    container:
+      image: node
+      volumes:
+        - '/mnt/swarm/gitea/runner/cache:/cache'
+    steps:
+      -   name: Clone Repository
+          uses: ztimson/actions/clone@develop
+
+      -   name: Restore node_modules
+          uses: ztimson/actions/cache/restore@develop
+          with:
+            key: node_modules
+
+      -   name: Install Dependencies
+          run: npm i
+
+      -   name: Build Project
+          run: npm run build
+
+      -   name: Test
+          run: npm run test:coverage
+
+      -   name: Cache node_modules
+          uses: ztimson/actions/cache@develop
+          with:
+            key: node_modules
+            pattern: node_modules
+
+      -   name: Cache Artifacts
+          uses: ztimson/actions/cache@develop
+          with:
+            pattern: dist
+  tag:
+    name: Tag Version
+    needs: build
+    if: ${{github.ref_name}} == 'release'
+    runs-on: ubuntu-latest
+    container: node
+    steps:
+      -   name: Clone Repository
+          uses: ztimson/actions/clone@develop
+
+      -   name: Get Version Number
+          run: echo "VERSION=$(cat package.json | grep version | grep -Eo ':.+' | grep -Eo '[[:alnum:]\.\/\-]+')" >> $GITHUB_ENV
+
+      -   name: Tag Version
+          uses: ztimson/actions/tag@develop
+          with:
+            tag: ${{env.VERSION}}
+
+  publish:
+    name: Publish
+    needs: build
+    if: ${{github.ref_name}} == 'release'
+    runs-on: ubuntu-latest
+    container:
+      image: node
+      volumes:
+        - '/mnt/swarm/gitea/runner/cache:/cache'
+    steps:
+      -   name: Clone Repository
+          uses: ztimson/actions/clone@develop
+
+      -   name: Restore Artifacts
+          uses: ztimson/actions/cache/restore@develop
+
+      -   name: Upload to Registry
+          uses: ztimson/actions/npm/publish@develop
+
+      -   name: Upload to NPM
+          uses: ztimson/actions/npm/publish@develop
+          with:
+            owner: ztimson
+            registry: https://registry.npmjs.org/
+            token: ${{secrets.NPM_TOKEN}}

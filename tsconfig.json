@@ -2,7 +2,11 @@
 	"compilerOptions": {
 		"declaration": true,
 		"declarationMap": true,
-		"lib": ["ESNext"],
+		"experimentalDecorators": true,
+		"lib": [
+			"ESNext",
+			"DOM"
+		],
 		"module": "commonjs",
 		"outDir": "./dist",
 		"strict": true,
